@@ -1,4 +1,4 @@
-local root_mod = require("core.root")
+local root_mod = require("util.root")
 
 local function get_go_root(dir)
     local root = (root_mod and root_mod.root_dir(dir, { "go.mod" })) or dir or vim.uv.cwd()

@@ -1,12 +1,18 @@
 local opt = vim.opt
 
+-- Disable unused remote/legacy providers upfront (speeds startup & fixes :checkhealth)
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
+
 -- Buffer & File
 opt.undofile = true
 opt.undolevels = 10000
 opt.swapfile = false
 opt.writebackup = false
 
--- Keamanan ekstra jika sesi sudo / root / sudoedit fallback
+-- Extra defense if running under sudo / root
 if vim.env.SUDO_USER or (vim.uv.getuid and vim.uv.getuid() == 0) then
     opt.undofile = false
     opt.shada = ""
@@ -14,11 +20,11 @@ if vim.env.SUDO_USER or (vim.uv.getuid and vim.uv.getuid() == 0) then
     opt.modeline = false
     opt.clipboard = ""
 end
+
 opt.cmdheight = 1
 opt.updatetime = 300
 opt.timeoutlen = 300
 opt.confirm = true
-opt.autowrite = true
 opt.sessionoptions = "buffers,curdir,tabpages,winsize,help,skiprtp,globals"
 
 -- Display & Line Numbers
@@ -31,13 +37,13 @@ opt.winminwidth = 5
 opt.laststatus = 3
 opt.cursorline = true
 opt.signcolumn = "yes"
-opt.showtabline = 2
+opt.showtabline = 1
 opt.pumheight = 15
 opt.showmode = false
 opt.conceallevel = 2
 opt.smoothscroll = true
 
--- Indentation (smartindent removed: syntax/treesitter indent handles indentation properly)
+-- Indentation (Treesitter indent handles structural indentation per-buffer)
 opt.tabstop = 4
 opt.softtabstop = 4
 opt.shiftwidth = 4
@@ -61,11 +67,9 @@ opt.spelllang = { "en", "id" }
 opt.splitbelow = true
 opt.splitright = true
 opt.splitkeep = "screen"
-opt.winborder = "single" -- border float seragam & tajam untuk semua window float native
+opt.winborder = "single"
 
--- Native Code Folding (Neovim 0.12 Treesitter foldexpr)
-opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- Folding defaults (foldmethod & foldexpr applied per-buffer when Treesitter starts)
 opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
@@ -81,7 +85,23 @@ opt.fillchars = {
 
 -- Messages & Diff
 opt.formatoptions = "jcroqlnt"
--- Hindari flag 'W' di shortmess agar notifikasi write di noice tetap muncul
 opt.shortmess:append({ I = true, c = true, C = true })
 opt.diffopt:append("linematch:60")
 opt.jumpoptions = "view"
+
+-- Custom filetypes (compose / mdx)
+vim.filetype.add({
+    extension = {
+        mdx = "markdown.mdx",
+    },
+    filename = {
+        ["docker-compose.yaml"] = "yaml.docker-compose",
+        ["docker-compose.yml"] = "yaml.docker-compose",
+        ["compose.yaml"] = "yaml.docker-compose",
+        ["compose.yml"] = "yaml.docker-compose",
+    },
+    pattern = {
+        [".*docker%-compose%..*%.ya?ml"] = "yaml.docker-compose",
+        [".*compose%..*%.ya?ml"] = "yaml.docker-compose",
+    },
+})

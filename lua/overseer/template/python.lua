@@ -1,5 +1,5 @@
-local root_mod = require("core.root")
-local venv = require("core.venv")
+local root_mod = require("util.root")
+local venv = require("util.python")
 
 local function get_python_root(dir)
     local markers = { "pyproject.toml", "uv.lock", "setup.py", "requirements.txt", ".git" }

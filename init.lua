@@ -29,6 +29,7 @@ local function safe_load(mod)
     if not ok then
         vim.notify("Failed loading " .. mod .. "\n" .. err, vim.log.levels.ERROR)
     end
+    return ok, err
 end
 
 if vim.env.SSH_CLIENT then
@@ -47,10 +48,10 @@ if vim.g.neovide then
     vim.g.neovide_cursor_vfx_mode = "wireframe"
 end
 
-safe_load("core.options")
-safe_load("core.keymaps")
-safe_load("core.autocmds")
-safe_load("core.sysdeps")
+safe_load("config.options")
+safe_load("config.keymaps")
+safe_load("config.autocmds")
+safe_load("config.lazy")
 
 require("theme.cryptnight").setup({
     transparent = false,
@@ -62,65 +63,9 @@ require("theme.cryptnight").setup({
     },
 })
 require("theme.cryptnight").load()
-vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "cryptnight" })
+vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "cryptnight-storm" })
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-    local out = vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "--branch=stable",
-        lazyrepo,
-        lazypath,
-    })
-    if vim.v.shell_error ~= 0 then
-        vim.api.nvim_echo({
-            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out, "WarningMsg" },
-            { "\nPress any key to exit..." },
-        }, true, {})
-        vim.fn.getchar()
-        os.exit(1)
-    end
+local ok_lsp, lsp = pcall(require, "config.lsp")
+if ok_lsp then
+    lsp.setup()
 end
-vim.opt.rtp:prepend(lazypath)
-require("lazy").setup({
-    spec = {
-        { import = "plugins" },
-        { import = "plugins.lang" },
-    },
-    defaults = {
-        lazy = true,
-    },
-    checker = {
-        enabled = true, -- Otomatis mengecek pembaruan di latar belakang
-        notify = true, -- Memunculkan notifikasi (akan diteruskan ke snacks.notifier)
-    },
-    rocks = {
-        enabled = false,
-    },
-    change_detection = {
-        enabled = true,
-        notify = false,
-    },
-    performance = {
-        cache = { enabled = true },
-        rtp = {
-            disabled_plugins = {
-                "gzip",
-                "man",
-                "netrwPlugin",
-                "spellfile",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
-    ui = {
-        border = "single",
-    },
-})
