@@ -10,6 +10,13 @@ return {
                 end,
                 desc = "LazyGit",
             },
+            {
+                "<leader>gD",
+                function()
+                    require("gitsigns").diffthis("~")
+                end,
+                desc = "Diff Buffer vs HEAD~1",
+            },
         },
         opts = {
             signs = {
@@ -33,7 +40,7 @@ return {
                 local gs = require("gitsigns")
                 local function map(mode, l, r, desc, opts)
                     opts = opts or {}
-                    opts.buffer = bufnr
+                    opts.buf = bufnr
                     opts.desc = "gitsigns: " .. desc
                     vim.keymap.set(mode, l, r, opts)
                 end
@@ -64,7 +71,6 @@ return {
                 map("n", "<leader>hS", gs.stage_buffer, "Stage Buffer")
                 map({ "n", "v" }, "<leader>hr", gs.reset_hunk, "Reset Hunk")
                 map("n", "<leader>hR", gs.reset_buffer, "Reset Buffer")
-
                 map("n", "<leader>hu", function()
                     gs.stage_hunk({ undo = true })
                 end, "Undo Stage Hunk")
@@ -77,31 +83,6 @@ return {
                 map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Select Hunk (Inner)")
                 map({ "o", "x" }, "ah", ":<C-U>Gitsigns select_hunk<CR>", "Select Hunk (Around)")
             end,
-        },
-    },
-
-    {
-        "sindrets/diffview.nvim",
-        cmd = { "DiffviewOpen", "DiffviewFileHistory" },
-        keys = {
-            { "<leader>gD", "<cmd>DiffviewOpen<cr>", desc = "Diffview: Open" },
-            { "<leader>gH", "<cmd>DiffviewFileHistory %<cr>", desc = "Diffview: File History" },
-        },
-        opts = {
-            enhanced_diff_hl = true,
-            use_icons = true,
-            icons = {
-                folder_closed = "",
-                folder_open = "",
-            },
-            signs = {
-                fold_closed = "",
-                fold_open = "",
-                done = "✓",
-            },
-            view = {
-                merge_tool = { layout = "diff3_horizontal", disable_diagnostics = true },
-            },
         },
     },
 
@@ -123,7 +104,6 @@ return {
             use_timeline_icons = true,
             gh_cmd = "gh",
             ui = { use_statuscolumn = true, use_foldtext = true },
-            -- Gunakan Localleader (",") untuk menghindari konflik dengan LSP
             mappings = {
                 pull_request = {
                     checkout_pr = { lhs = "<localleader>po", desc = "checkout PR" },
