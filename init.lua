@@ -1,3 +1,13 @@
+if vim.env.SUDO_USER or (vim.uv.getuid and vim.uv.getuid() == 0) then
+    vim.g.disable_autoformat = true
+    dofile(vim.fn.stdpath("config") .. "/sudoedit.lua")
+    vim.notify(
+        "Sudo/root session: mode terisolasi aktif (plugin, undofile, clipboard & shada dinonaktifkan)",
+        vim.log.levels.WARN
+    )
+    return
+end
+
 vim.loader.enable()
 
 local extra_paths = {
@@ -21,10 +31,7 @@ local function safe_load(mod)
     end
 end
 
-if vim.env.SUDO_USER then
-    vim.g.disable_autoformat = true
-    vim.notify("Sudo session: auto-format, undofile, clipboard & shada dinonaktifkan demi keamanan", vim.log.levels.WARN)
-elseif vim.env.SSH_CLIENT then
+if vim.env.SSH_CLIENT then
     vim.g.disable_autoformat = true
     vim.notify("SSH session: auto-format disabled (LSP tetap aktif)", vim.log.levels.WARN)
 end

@@ -13,6 +13,9 @@ opt.writebackup = false
 opt.shada = ""              -- JANGAN simpan riwayat command/search/register ke main.shada
 opt.shadafile = "NONE"      -- Pastikan ShaDa benar-benar dinonaktifkan
 opt.modeline = false        -- Cegah eksekusi modeline berbahaya dari file yang diedit
+opt.exrc = false            -- Cegah eksekusi .nvim.lua / .exrc lokal di direktori kerja
+opt.secure = true           -- Batasi perintah berbahaya dari file eksternal
+opt.loadplugins = false     -- Jangan load plugin startup otomatis
 opt.clipboard = ""          -- JANGAN sync otomatis ke clipboard desktop (Wayland/X11)
 
 -- ============================================================================
