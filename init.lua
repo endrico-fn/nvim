@@ -1,6 +1,26 @@
 if vim.env.SUDO_USER or (vim.uv.getuid and vim.uv.getuid() == 0) then
     vim.g.disable_autoformat = true
-    dofile(vim.fn.stdpath("config") .. "/sudoedit.lua")
+    local src = debug.getinfo(1, "S").source
+    local cfg_dir = (src:sub(1, 1) == "@") and vim.fs.dirname(src:sub(2))
+        or vim.fn.stdpath("config")
+    local sudoedit_path = vim.fs.joinpath(cfg_dir, "sudoedit.lua")
+    if not vim.uv.fs_stat(sudoedit_path) then
+        sudoedit_path = vim.fs.joinpath(vim.fn.stdpath("config"), "sudoedit.lua")
+    end
+    local ok = pcall(dofile, sudoedit_path)
+    if not ok then
+        vim.opt.exrc = false
+        vim.opt.secure = true
+        vim.opt.loadplugins = false
+        vim.opt.modeline = false
+        vim.opt.undofile = false
+        vim.opt.swapfile = false
+        vim.opt.backup = false
+        vim.opt.writebackup = false
+        vim.opt.shada = ""
+        vim.opt.shadafile = "NONE"
+        vim.opt.clipboard = ""
+    end
     vim.notify(
         "Sudo/root session: mode terisolasi aktif (plugin, undofile, clipboard & shada dinonaktifkan)",
         vim.log.levels.WARN

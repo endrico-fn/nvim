@@ -8,8 +8,7 @@ return {
         end
         config.settings = config.settings or {}
         config.settings.json = config.settings.json or {}
-        config.settings.json.schemas = config.settings.json.schemas or {}
-        vim.list_extend(config.settings.json.schemas, schemastore.json.schemas())
+        config.settings.json.schemas = vim.list_extend({}, schemastore.json.schemas())
     end,
     settings = {
         json = {
