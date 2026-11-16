@@ -307,18 +307,91 @@ return {
             "jbyuki/one-small-step-for-vimkind",
         },
         keys = {
-            { "<F5>", function() require("dap").continue() end, desc = "Debug: Start/Continue" },
-            { "<F10>", function() require("dap").step_over() end, desc = "Debug: Step Over" },
-            { "<F11>", function() require("dap").step_into() end, desc = "Debug: Step Into" },
-            { "<F12>", function() require("dap").step_out() end, desc = "Debug: Step Out" },
-            { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
-            { "<leader>dc", function() require("dap").continue() end, desc = "Continue" },
-            { "<leader>di", function() require("dap").step_into() end, desc = "Step Into" },
-            { "<leader>do", function() require("dap").step_out() end, desc = "Step Out" },
-            { "<leader>dO", function() require("dap").step_over() end, desc = "Step Over" },
-            { "<leader>dt", function() require("dap").terminate() end, desc = "Terminate" },
-            { "<leader>du", function() require("dapui").toggle() end, desc = "DAP UI" },
-            { "<leader>de", function() require("dapui").eval() end, mode = { "n", "x" }, desc = "Eval" },
+            {
+                "<F5>",
+                function()
+                    require("dap").continue()
+                end,
+                desc = "Debug: Start/Continue",
+            },
+            {
+                "<F10>",
+                function()
+                    require("dap").step_over()
+                end,
+                desc = "Debug: Step Over",
+            },
+            {
+                "<F11>",
+                function()
+                    require("dap").step_into()
+                end,
+                desc = "Debug: Step Into",
+            },
+            {
+                "<F12>",
+                function()
+                    require("dap").step_out()
+                end,
+                desc = "Debug: Step Out",
+            },
+            {
+                "<leader>db",
+                function()
+                    require("dap").toggle_breakpoint()
+                end,
+                desc = "Toggle Breakpoint",
+            },
+            {
+                "<leader>dc",
+                function()
+                    require("dap").continue()
+                end,
+                desc = "Continue",
+            },
+            {
+                "<leader>di",
+                function()
+                    require("dap").step_into()
+                end,
+                desc = "Step Into",
+            },
+            {
+                "<leader>do",
+                function()
+                    require("dap").step_out()
+                end,
+                desc = "Step Out",
+            },
+            {
+                "<leader>dO",
+                function()
+                    require("dap").step_over()
+                end,
+                desc = "Step Over",
+            },
+            {
+                "<leader>dt",
+                function()
+                    require("dap").terminate()
+                end,
+                desc = "Terminate",
+            },
+            {
+                "<leader>du",
+                function()
+                    require("dapui").toggle()
+                end,
+                desc = "DAP UI",
+            },
+            {
+                "<leader>de",
+                function()
+                    require("dapui").eval()
+                end,
+                mode = { "n", "x" },
+                desc = "Eval",
+            },
             {
                 "<leader>dB",
                 function()
@@ -333,7 +406,13 @@ return {
                 end,
                 desc = "Log Point",
             },
-            { "<leader>dr", function() require("dap").restart() end, desc = "Restart" },
+            {
+                "<leader>dr",
+                function()
+                    require("dap").restart()
+                end,
+                desc = "Restart",
+            },
             {
                 "<leader>da",
                 function()
@@ -341,15 +420,69 @@ return {
                 end,
                 desc = "Run with Args",
             },
-            { "<leader>dC", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
-            { "<leader>dg", function() require("dap").goto_() end, desc = "Go to Line (No Execute)" },
-            { "<leader>dj", function() require("dap").down() end, desc = "Stack Down" },
-            { "<leader>dk", function() require("dap").up() end, desc = "Stack Up" },
-            { "<leader>dL", function() require("dap").run_last() end, desc = "Run Last" },
-            { "<leader>dp", function() require("dap").pause() end, desc = "Pause" },
-            { "<leader>dR", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
-            { "<leader>ds", function() require("dap").session() end, desc = "Session" },
-            { "<leader>dw", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+            {
+                "<leader>dC",
+                function()
+                    require("dap").run_to_cursor()
+                end,
+                desc = "Run to Cursor",
+            },
+            {
+                "<leader>dg",
+                function()
+                    require("dap").goto_()
+                end,
+                desc = "Go to Line (No Execute)",
+            },
+            {
+                "<leader>dj",
+                function()
+                    require("dap").down()
+                end,
+                desc = "Stack Down",
+            },
+            {
+                "<leader>dk",
+                function()
+                    require("dap").up()
+                end,
+                desc = "Stack Up",
+            },
+            {
+                "<leader>dL",
+                function()
+                    require("dap").run_last()
+                end,
+                desc = "Run Last",
+            },
+            {
+                "<leader>dp",
+                function()
+                    require("dap").pause()
+                end,
+                desc = "Pause",
+            },
+            {
+                "<leader>dR",
+                function()
+                    require("dap").repl.toggle()
+                end,
+                desc = "Toggle REPL",
+            },
+            {
+                "<leader>ds",
+                function()
+                    require("dap").session()
+                end,
+                desc = "Session",
+            },
+            {
+                "<leader>dw",
+                function()
+                    require("dap.ui.widgets").hover()
+                end,
+                desc = "Widgets",
+            },
         },
         config = function()
             local dap = require("dap")
@@ -382,12 +515,8 @@ return {
             do
                 local codelldb = vim.fn.exepath("codelldb")
                 if codelldb == "" then
-                    local mason_codelldb = vim.fs.joinpath(
-                        vim.fn.stdpath("data"),
-                        "mason",
-                        "bin",
-                        "codelldb"
-                    )
+                    local mason_codelldb =
+                        vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin", "codelldb")
                     if vim.uv.fs_stat(mason_codelldb) then
                         codelldb = mason_codelldb
                     end
@@ -519,7 +648,13 @@ return {
             "nvim-neotest/neotest-plenary",
         },
         keys = {
-            { "<leader>tr", function() require("neotest").run.run() end, desc = "Run Nearest" },
+            {
+                "<leader>tr",
+                function()
+                    require("neotest").run.run()
+                end,
+                desc = "Run Nearest",
+            },
             {
                 "<leader>tf",
                 function()
@@ -527,7 +662,13 @@ return {
                 end,
                 desc = "Run File",
             },
-            { "<leader>ts", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
+            {
+                "<leader>ts",
+                function()
+                    require("neotest").summary.toggle()
+                end,
+                desc = "Toggle Summary",
+            },
             {
                 "<leader>dn",
                 function()
@@ -535,7 +676,13 @@ return {
                 end,
                 desc = "Debug Nearest Test",
             },
-            { "<leader>tS", function() require("neotest").run.stop() end, desc = "Stop" },
+            {
+                "<leader>tS",
+                function()
+                    require("neotest").run.stop()
+                end,
+                desc = "Stop",
+            },
             {
                 "<leader>tT",
                 function()
@@ -550,8 +697,20 @@ return {
                 end,
                 desc = "Show Output",
             },
-            { "<leader>ta", function() require("neotest").run.attach() end, desc = "Attach" },
-            { "<leader>tl", function() require("neotest").run.run_last() end, desc = "Run Last" },
+            {
+                "<leader>ta",
+                function()
+                    require("neotest").run.attach()
+                end,
+                desc = "Attach",
+            },
+            {
+                "<leader>tl",
+                function()
+                    require("neotest").run.run_last()
+                end,
+                desc = "Run Last",
+            },
             {
                 "<leader>tO",
                 function()

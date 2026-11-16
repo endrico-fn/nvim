@@ -110,7 +110,8 @@ return {
                                 vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
                             end
                             if vim.treesitter.query.get(lang, "indents") then
-                                vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                                vim.bo[buf].indentexpr =
+                                    "v:lua.require'nvim-treesitter'.indentexpr()"
                             end
                         end
                     end

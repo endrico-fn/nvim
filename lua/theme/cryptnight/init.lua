@@ -4,9 +4,9 @@ local M = {}
 M.styles = {}
 
 function M.load(opts)
-	opts = config.extend(opts)
-	vim.o.background = "dark"
-	return require("theme.cryptnight.theme").setup(opts)
+    opts = config.extend(opts)
+    vim.o.background = "dark"
+    return require("theme.cryptnight.theme").setup(opts)
 end
 
 M.setup = config.setup

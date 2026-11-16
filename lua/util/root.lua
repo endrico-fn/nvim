@@ -92,14 +92,12 @@ function M.find_workspace_tsdk(fname)
         root .. "/node_modules/.pnpm/typescript@*/node_modules/typescript/lib",
     }
     for _, node_modules in
-        ipairs(
-            vim.fs.find("node_modules", {
-                path = root,
-                upward = false,
-                limit = 1,
-                type = "directory",
-            }) or {}
-        )
+        ipairs(vim.fs.find("node_modules", {
+            path = root,
+            upward = false,
+            limit = 1,
+            type = "directory",
+        }) or {})
     do
         table.insert(candidates, node_modules .. "/typescript/lib")
     end

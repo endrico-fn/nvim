@@ -139,8 +139,7 @@ return {
                 "<leader>rr",
                 function()
                     local file = vim.api.nvim_buf_get_name(0)
-                    local prefills = file ~= "" and { paths = vim.fn.fnamemodify(file, ":.") }
-                        or {}
+                    local prefills = file ~= "" and { paths = vim.fn.fnamemodify(file, ":.") } or {}
                     require("grug-far").open({ prefills = prefills })
                 end,
                 desc = "Replace (Current File)",
@@ -165,8 +164,7 @@ return {
                 "<leader>rW",
                 function()
                     local file = vim.api.nvim_buf_get_name(0)
-                    local prefills = file ~= "" and { paths = vim.fn.fnamemodify(file, ":.") }
-                        or {}
+                    local prefills = file ~= "" and { paths = vim.fn.fnamemodify(file, ":.") } or {}
                     require("grug-far").with_visual_selection({ prefills = prefills })
                 end,
                 mode = "v",
@@ -213,11 +211,7 @@ return {
                     local harpoon = require("harpoon")
                     harpoon:list():add()
                     local file = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":~:.")
-                    vim.notify(
-                        "Ditambahkan: " .. file,
-                        vim.log.levels.INFO,
-                        { title = "Harpoon" }
-                    )
+                    vim.notify("Ditambahkan: " .. file, vim.log.levels.INFO, { title = "Harpoon" })
                 end,
                 desc = "Harpoon: Add file",
             },
@@ -253,7 +247,11 @@ return {
                         end
                     end
                     if #items == 0 then
-                        vim.notify("Harpoon list kosong", vim.log.levels.INFO, { title = "Harpoon" })
+                        vim.notify(
+                            "Harpoon list kosong",
+                            vim.log.levels.INFO,
+                            { title = "Harpoon" }
+                        )
                         return
                     end
                     if _G.Snacks and Snacks.picker then
@@ -590,7 +588,9 @@ return {
             vim.g.skip_ts_context_commentstring_module = true
             local get_option = vim.filetype.get_option
             vim.filetype.get_option = function(filetype, option)
-                if option == "commentstring" and vim.tbl_contains(web_commentstring_fts, filetype) then
+                if
+                    option == "commentstring" and vim.tbl_contains(web_commentstring_fts, filetype)
+                then
                     return require("ts_context_commentstring.internal").calculate_commentstring()
                 end
                 return get_option(filetype, option)

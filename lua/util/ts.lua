@@ -81,7 +81,12 @@ function M.is_ts7_workspace(bufnr)
     end
 
     local pkg = read_package_json(root)
-    if has_pkg_dep(pkg, "vue") or has_pkg_dep(pkg, "astro") or has_pkg_dep(pkg, "svelte") or has_pkg_dep(pkg, "nuxt") then
+    if
+        has_pkg_dep(pkg, "vue")
+        or has_pkg_dep(pkg, "astro")
+        or has_pkg_dep(pkg, "svelte")
+        or has_pkg_dep(pkg, "nuxt")
+    then
         _ts7_cache[root] = { ok = false }
         return _ts7_cache[root]
     end
@@ -123,7 +128,12 @@ local function find_class_attr_at_cursor(buf)
     local line = vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1] or ""
     local col1 = col0 + 1
 
-    for _, pat in ipairs({ 'className%s*=%s*"([^"]*)"', 'class%s*=%s*"([^"]*)"', "className%s*=%s*'([^']*)'", "class%s*=%s*'([^']*)'" }) do
+    for _, pat in ipairs({
+        'className%s*=%s*"([^"]*)"',
+        'class%s*=%s*"([^"]*)"',
+        "className%s*=%s*'([^']*)'",
+        "class%s*=%s*'([^']*)'",
+    }) do
         local init = 1
         while true do
             local s, e, inner = line:find(pat, init)
@@ -154,7 +164,11 @@ function M.sort_tailwind_classes()
         if ok_conf then
             conform.format({ bufnr = buf })
         else
-            vim.notify("tailwindcss LSP belum terpasang di buffer ini", vim.log.levels.WARN, { title = "Tailwind" })
+            vim.notify(
+                "tailwindcss LSP belum terpasang di buffer ini",
+                vim.log.levels.WARN,
+                { title = "Tailwind" }
+            )
         end
         return
     end
@@ -180,9 +194,13 @@ function M.sort_tailwind_classes()
         if ok_conf then
             conform.format({ bufnr = buf })
         else
-            vim.notify("Arahkan kursor ke atribut class/className atau pilih teks visual.", vim.log.levels.INFO, {
-                title = "Tailwind",
-            })
+            vim.notify(
+                "Arahkan kursor ke atribut class/className atau pilih teks visual.",
+                vim.log.levels.INFO,
+                {
+                    title = "Tailwind",
+                }
+            )
         end
         return
     end
@@ -194,9 +212,13 @@ function M.sort_tailwind_classes()
 
     client:request("@/tailwindCSS/sortSelection", params, function(err, result)
         if err then
-            vim.notify("Tailwind sort error: " .. (err.message or tostring(err)), vim.log.levels.ERROR, {
-                title = "Tailwind",
-            })
+            vim.notify(
+                "Tailwind sort error: " .. (err.message or tostring(err)),
+                vim.log.levels.ERROR,
+                {
+                    title = "Tailwind",
+                }
+            )
             return
         end
         if not result or type(result.classLists) ~= "table" or not result.classLists[1] then

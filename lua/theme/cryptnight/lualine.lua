@@ -7,59 +7,59 @@ local c = require("theme.cryptnight.colors").get_colors(config_ok and config.opt
 local M = {}
 
 M.normal = {
-	a = { fg = c.bg, bg = c.blue, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
-	x = { fg = c.fg, bg = c.fold_bg },
-	z = { fg = c.bg, bg = c.blue, gui = "bold" },
+    a = { fg = c.bg, bg = c.blue, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
+    x = { fg = c.fg, bg = c.fold_bg },
+    z = { fg = c.bg, bg = c.blue, gui = "bold" },
 }
 
 M.insert = {
-	a = { fg = c.bg, bg = c.light_green, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
+    a = { fg = c.bg, bg = c.light_green, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
 }
 
 M.visual = {
-	a = { fg = c.bg, bg = c.pink, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
+    a = { fg = c.bg, bg = c.pink, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
 }
 
 M.replace = {
-	a = { fg = c.bg, bg = c.red, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
+    a = { fg = c.bg, bg = c.red, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
 }
 
 M.command = {
-	a = { fg = c.bg, bg = c.yellow, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
+    a = { fg = c.bg, bg = c.yellow, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
 }
 
 M.terminal = {
-	a = { fg = c.bg, bg = c.cyan, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
+    a = { fg = c.bg, bg = c.cyan, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
 }
 
 M.select = {
-	a = { fg = c.bg, bg = c.violet, gui = "bold" },
-	b = { fg = c.fg, bg = c.fold_bg },
-	c = { fg = c.fg, bg = "NONE" },
-	x = { fg = c.fg, bg = c.fold_bg },
-	y = { fg = c.line_number, bg = c.bg_dark },
-	z = { fg = c.bg, bg = c.violet, gui = "bold" },
+    a = { fg = c.bg, bg = c.violet, gui = "bold" },
+    b = { fg = c.fg, bg = c.fold_bg },
+    c = { fg = c.fg, bg = "NONE" },
+    x = { fg = c.fg, bg = c.fold_bg },
+    y = { fg = c.line_number, bg = c.bg_dark },
+    z = { fg = c.bg, bg = c.violet, gui = "bold" },
 }
 
 M.inactive = {
-	a = { fg = c.suggestion, bg = "NONE" },
-	b = { fg = c.suggestion, bg = "NONE" },
-	c = { fg = c.suggestion, bg = "NONE" },
-	x = { fg = c.suggestion, bg = "NONE" },
-	y = { fg = c.suggestion, bg = "NONE" },
-	z = { fg = c.suggestion, bg = "NONE" },
+    a = { fg = c.suggestion, bg = "NONE" },
+    b = { fg = c.suggestion, bg = "NONE" },
+    c = { fg = c.suggestion, bg = "NONE" },
+    x = { fg = c.suggestion, bg = "NONE" },
+    y = { fg = c.suggestion, bg = "NONE" },
+    z = { fg = c.suggestion, bg = "NONE" },
 }
 
 return M

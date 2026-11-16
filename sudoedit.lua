@@ -6,17 +6,17 @@ local opt = vim.opt
 -- ============================================================================
 -- 1. KEAMANAN DATA & PRIVASI (Cegah kebocoran data sensitif ke disk user)
 -- ============================================================================
-opt.undofile = false        -- JANGAN simpan riwayat undo ke ~/.local/state/nvim/undo/
-opt.swapfile = false        -- Tidak membuat file .swp di disk
-opt.backup = false          -- Tidak membuat file backup
+opt.undofile = false -- JANGAN simpan riwayat undo ke ~/.local/state/nvim/undo/
+opt.swapfile = false -- Tidak membuat file .swp di disk
+opt.backup = false -- Tidak membuat file backup
 opt.writebackup = false
-opt.shada = ""              -- JANGAN simpan riwayat command/search/register ke main.shada
-opt.shadafile = "NONE"      -- Pastikan ShaDa benar-benar dinonaktifkan
-opt.modeline = false        -- Cegah eksekusi modeline berbahaya dari file yang diedit
-opt.exrc = false            -- Cegah eksekusi .nvim.lua / .exrc lokal di direktori kerja
-opt.secure = true           -- Batasi perintah berbahaya dari file eksternal
-opt.loadplugins = false     -- Jangan load plugin startup otomatis
-opt.clipboard = ""          -- JANGAN sync otomatis ke clipboard desktop (Wayland/X11)
+opt.shada = "" -- JANGAN simpan riwayat command/search/register ke main.shada
+opt.shadafile = "NONE" -- Pastikan ShaDa benar-benar dinonaktifkan
+opt.modeline = false -- Cegah eksekusi modeline berbahaya dari file yang diedit
+opt.exrc = false -- Cegah eksekusi .nvim.lua / .exrc lokal di direktori kerja
+opt.secure = true -- Batasi perintah berbahaya dari file eksternal
+opt.loadplugins = false -- Jangan load plugin startup otomatis
+opt.clipboard = "" -- JANGAN sync otomatis ke clipboard desktop (Wayland/X11)
 
 -- ============================================================================
 -- 2. TAMPILAN & KENYAMANAN EDITOR

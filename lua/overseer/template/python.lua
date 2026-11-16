@@ -30,7 +30,8 @@ return {
                 desc = "Run current Python script",
                 tags = { "RUN", "PYTHON" },
                 builder = function()
-                    local cmd = has_uv and { "uv", "run", current_file } or { python_bin, current_file }
+                    local cmd = has_uv and { "uv", "run", current_file }
+                        or { python_bin, current_file }
                     return {
                         cmd = cmd,
                         cwd = root,

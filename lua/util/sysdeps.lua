@@ -1228,7 +1228,11 @@ function M.auto_check()
             end
             if #names > 0 then
                 vim.notify(
-                    "Sysdeps: " .. #names .. " dependensi sistem belum terpasang (" .. table.concat(names, ", ") .. "). Jalankan :SysDepsCheck atau ~/.config/nvim/bootstrap.sh",
+                    "Sysdeps: "
+                        .. #names
+                        .. " dependensi sistem belum terpasang ("
+                        .. table.concat(names, ", ")
+                        .. "). Jalankan :SysDepsCheck atau ~/.config/nvim/bootstrap.sh",
                     vim.log.levels.INFO,
                     { title = "sysdeps" }
                 )

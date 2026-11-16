@@ -80,7 +80,10 @@ local function setup_sqlite_tools()
                             },
                         },
                     })
-                    client:notify("workspace/didChangeConfiguration", { settings = client.settings })
+                    client:notify(
+                        "workspace/didChangeConfiguration",
+                        { settings = client.settings }
+                    )
                 end
             end, 150)
             vim.defer_fn(function()
@@ -177,7 +180,10 @@ return {
                 time_format = "HH:mm",
                 substitutions = {
                     date = function(_, suffix)
-                        return require("obsidian.util").format_date(os.time(), suffix or "YYYY-MM-DD")
+                        return require("obsidian.util").format_date(
+                            os.time(),
+                            suffix or "YYYY-MM-DD"
+                        )
                     end,
                     time = function(_, suffix)
                         return require("obsidian.util").format_date(os.time(), suffix or "HH:mm")
@@ -298,17 +304,32 @@ return {
                     local function omap(lhs, action, desc)
                         vim.keymap.set("n", lhs, function()
                             return require("obsidian").actions[action]()
-                        end, { buf = args.buf, silent = true, noremap = true, desc = desc })
+                        end, {
+                            buf = args.buf,
+                            silent = true,
+                            noremap = true,
+                            desc = desc,
+                        })
                     end
 
                     omap("<CR>", "smart_action", "Obsidian: Smart Action")
                     omap("gl", "follow_link", "Obsidian: Follow Link")
                     vim.keymap.set("n", "]o", function()
                         return require("obsidian").actions.nav_link(true)
-                    end, { buf = args.buf, silent = true, noremap = true, desc = "Obsidian: Next Link" })
+                    end, {
+                        buf = args.buf,
+                        silent = true,
+                        noremap = true,
+                        desc = "Obsidian: Next Link",
+                    })
                     vim.keymap.set("n", "[o", function()
                         return require("obsidian").actions.nav_link(false)
-                    end, { buf = args.buf, silent = true, noremap = true, desc = "Obsidian: Prev Link" })
+                    end, {
+                        buf = args.buf,
+                        silent = true,
+                        noremap = true,
+                        desc = "Obsidian: Prev Link",
+                    })
                     omap("<leader>Oc", "toggle_checkbox", "Obsidian: Toggle Checkbox")
                 end,
             })

@@ -151,7 +151,11 @@ map("<leader>ki", function()
                 local lines = vim.split(out.stdout, "\n", { plain = true })
                 local row = vim.api.nvim_win_get_cursor(0)[1]
                 vim.api.nvim_buf_set_lines(buf, row, row, false, lines)
-                vim.notify("Implemented interface stubs", vim.log.levels.INFO, { title = "Go Impl" })
+                vim.notify(
+                    "Implemented interface stubs",
+                    vim.log.levels.INFO,
+                    { title = "Go Impl" }
+                )
             else
                 vim.notify(
                     "impl gagal:\n" .. (out.stderr ~= "" and out.stderr or out.stdout),

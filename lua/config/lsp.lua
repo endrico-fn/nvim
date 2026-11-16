@@ -290,7 +290,13 @@ local function setup_attach_keymaps()
                     vim.lsp.buf.implementation()
                 end
             end, "Implementation", "textDocument/implementation")
-            map("n", "grt", vim.lsp.buf.type_definition, "Type Definition", "textDocument/typeDefinition")
+            map(
+                "n",
+                "grt",
+                vim.lsp.buf.type_definition,
+                "Type Definition",
+                "textDocument/typeDefinition"
+            )
             map("n", "gO", function()
                 if _G.Snacks and Snacks.picker then
                     Snacks.picker.lsp_symbols()
@@ -301,16 +307,40 @@ local function setup_attach_keymaps()
             map("n", "grn", function()
                 return ":IncRename " .. vim.fn.expand("<cword>")
             end, "Rename Symbol", "textDocument/rename", { expr = true })
-            map({ "n", "x" }, "gra", vim.lsp.buf.code_action, "Code Action", "textDocument/codeAction")
+            map(
+                { "n", "x" },
+                "gra",
+                vim.lsp.buf.code_action,
+                "Code Action",
+                "textDocument/codeAction"
+            )
             map("n", "grx", vim.lsp.codelens.run, "Run CodeLens", "textDocument/codeLens")
 
             -- Documentation & Signature Help (native Insert <C-s>)
             map("n", "K", vim.lsp.buf.hover, "Hover", "textDocument/hover")
-            map("n", "gK", vim.lsp.buf.signature_help, "Signature Help", "textDocument/signatureHelp")
-            map("i", "<C-s>", vim.lsp.buf.signature_help, "Signature Help (insert)", "textDocument/signatureHelp")
+            map(
+                "n",
+                "gK",
+                vim.lsp.buf.signature_help,
+                "Signature Help",
+                "textDocument/signatureHelp"
+            )
+            map(
+                "i",
+                "<C-s>",
+                vim.lsp.buf.signature_help,
+                "Signature Help (insert)",
+                "textDocument/signatureHelp"
+            )
 
             -- <leader>c* Code Actions, Refactor, Formatting, Diagnostics & Hints
-            map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code Action", "textDocument/codeAction")
+            map(
+                { "n", "v" },
+                "<leader>ca",
+                vim.lsp.buf.code_action,
+                "Code Action",
+                "textDocument/codeAction"
+            )
             map("n", "<leader>cr", function()
                 return ":IncRename " .. vim.fn.expand("<cword>")
             end, "Rename Symbol", "textDocument/rename", { expr = true })
@@ -318,7 +348,13 @@ local function setup_attach_keymaps()
                 require("conform").format({ bufnr = bufnr })
             end, "Format Buffer or Selection")
             map("n", "<leader>cd", vim.diagnostic.open_float, "Line Diagnostics")
-            map("n", "<leader>cS", vim.lsp.buf.workspace_symbol, "Workspace Symbols", "workspace/symbol")
+            map(
+                "n",
+                "<leader>cS",
+                vim.lsp.buf.workspace_symbol,
+                "Workspace Symbols",
+                "workspace/symbol"
+            )
             map("n", "<leader>cE", function()
                 vim.lsp.buf.code_action({
                     context = { only = { "refactor.extract" } },

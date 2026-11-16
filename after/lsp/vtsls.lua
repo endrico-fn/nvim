@@ -2,12 +2,8 @@ local root_mod = require("util.root")
 local ts_mod = require("util.ts")
 
 local global_plugins = {}
-local vue_plugin_path = root_mod.mason_pkg_path(
-    "vue-language-server",
-    "node_modules",
-    "@vue",
-    "typescript-plugin"
-)
+local vue_plugin_path =
+    root_mod.mason_pkg_path("vue-language-server", "node_modules", "@vue", "typescript-plugin")
 if vue_plugin_path then
     table.insert(global_plugins, {
         name = "@vue/typescript-plugin",

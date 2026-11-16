@@ -130,8 +130,18 @@ return {
             formatters_by_ft = {
                 javascript = { "biome-check", "prettierd", "prettier", stop_after_first = true },
                 typescript = { "biome-check", "prettierd", "prettier", stop_after_first = true },
-                javascriptreact = { "biome-check", "prettierd", "prettier", stop_after_first = true },
-                typescriptreact = { "biome-check", "prettierd", "prettier", stop_after_first = true },
+                javascriptreact = {
+                    "biome-check",
+                    "prettierd",
+                    "prettier",
+                    stop_after_first = true,
+                },
+                typescriptreact = {
+                    "biome-check",
+                    "prettierd",
+                    "prettier",
+                    stop_after_first = true,
+                },
                 css = { "biome-check", "prettierd", "prettier", stop_after_first = true },
                 scss = { "biome-check", "prettierd", "prettier", stop_after_first = true },
                 less = { "biome-check", "prettierd", "prettier", stop_after_first = true },
@@ -143,7 +153,12 @@ return {
                 vue = { "biome-check", "prettierd", "prettier", stop_after_first = true },
                 astro = { "biome-check", "prettierd", "prettier", stop_after_first = true },
                 yaml = { "yamlfmt", "prettierd", "prettier", stop_after_first = true },
-                ["yaml.docker-compose"] = { "yamlfmt", "prettierd", "prettier", stop_after_first = true },
+                ["yaml.docker-compose"] = {
+                    "yamlfmt",
+                    "prettierd",
+                    "prettier",
+                    stop_after_first = true,
+                },
                 markdown = { "prettierd", "markdown-toc", "injected" },
                 lua = { "stylua" },
                 python = { "ruff_organize_imports", "ruff_format" },
@@ -346,7 +361,8 @@ return {
                             end
                         end
                         if should_run then
-                            local cmd = type(linter.cmd) == "function" and linter.cmd() or linter.cmd
+                            local cmd = type(linter.cmd) == "function" and linter.cmd()
+                                or linter.cmd
                             if vim.fn.executable(cmd or name) == 1 then
                                 table.insert(available, name)
                             elseif not _notified_missing[name] then

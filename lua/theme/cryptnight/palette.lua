@@ -5,7 +5,7 @@ local M = {}
 M.storm = require("theme.cryptnight.colors.storm")
 
 function M.get(style)
-	return vim.deepcopy(M[style or "storm"])
+    return vim.deepcopy(M[style or "storm"])
 end
 
 return M
