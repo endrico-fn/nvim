@@ -30,10 +30,6 @@ function M.get(c, opts)
 		["@constructor.tsx"]        = { fg = c.blue_green },
 		["@constructor.python"]     = { fg = c.blue_green },
 
-		["@define"]                 = { fg = c.pink },
-
-		["@error"]                  = { fg = c.red },
-
 		["@function"]               = "Function",
 		["@function.builtin"]       = { fg = c.blue_green },
 		["@function.call"]          = "@function",
@@ -86,7 +82,6 @@ function M.get(c, opts)
 
 		["@module"]                 = { fg = c.blue_green },
 		["@module.builtin"]         = { fg = c.red },
-		["@namespace.builtin"]      = "@variable.builtin",
 
 		["@none"]                   = {},
 		["@conceal"]                = {},
@@ -122,17 +117,6 @@ function M.get(c, opts)
 		["@tag.attribute"]          = { fg = c.cyan },
 		["@tag.tsx"]                = { fg = c.red },
 		["@tag.javascript"]         = { fg = c.red },
-
-		["@text"]                   = { fg = c.fg },
-		["@text.reference"]         = { fg = c.orange },
-		["@text.title"]             = "Title",
-		["@text.uri"]               = "Underlined",
-		["@text.literal"]           = "@markup.raw",
-		["@text.note"]              = "@comment.note",
-		["@text.warning"]           = "@comment.warning",
-		["@text.danger"]            = "@comment.error",
-		["@text.diff.add"]          = "DiffAdd",
-		["@text.diff.delete"]       = "DiffDelete",
 
 		["@type"]                   = "Type",
 		["@type.builtin"]           = { fg = c.accent_blue },

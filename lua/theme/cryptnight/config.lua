@@ -1,6 +1,6 @@
 local M = {}
 
-M.version = "1.0.6"
+M.version = "1.1.0"
 
 M.defaults = {
 	style = "storm",

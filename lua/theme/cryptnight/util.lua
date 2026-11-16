@@ -103,9 +103,8 @@ function M.cache.write(key, data)
 end
 
 function M.cache.clear()
-	local uv = vim.uv or vim.loop
-	for _, style in ipairs({ "storm", "day" }) do
-		uv.fs_unlink(M.cache.file(style))
+	for _, style in ipairs({ "storm", "neutral" }) do
+		vim.uv.fs_unlink(M.cache.file(style))
 	end
 end
 

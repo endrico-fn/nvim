@@ -130,5 +130,6 @@ function M.get_colors(opts)
 end
 
 M.styles.storm = require("theme.cryptnight.colors.storm")
+M.styles.neutral = require("theme.cryptnight.colors.neutral")
 
 return M

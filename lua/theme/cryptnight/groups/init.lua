@@ -12,7 +12,6 @@ M.plugins = {
 	["nvim-dap"]                  = "dap",
 	["snacks.nvim"]               = "snacks",
 	["harpoon"]                   = "harpoon",
-	["noice.nvim"]                = "noice",
 	["lazy.nvim"]                 = "lazy",
 	["which-key.nvim"]            = "which-key",
 	["todo-comments.nvim"]        = "todo-comments",
