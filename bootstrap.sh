@@ -4,7 +4,7 @@
 #   ~/.config/nvim/bootstrap.sh          # Core tools + Rust + Go
 #   ~/.config/nvim/bootstrap.sh --all    # + Optional tools (Zig, Protobuf, SQLite)
 #
-# Packages match lua/core/sysdeps.lua. This script is idempotent.
+# Packages match lua/util/sysdeps.lua. This script is idempotent.
 set -u
 
 ALL=0
