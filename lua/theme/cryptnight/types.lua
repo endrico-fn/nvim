@@ -1,0 +1,89 @@
+---@class Palette
+---@field bg string
+---@field fg string
+---@field blue string
+---@field accent_blue string
+---@field cyan string
+---@field green string
+---@field red string
+---@field pink string
+---@field violet string
+---@field yellow string
+---@field orange string
+---@field yellow_orange string
+
+---@class ColorScheme: Palette
+---@field none string
+---@field normal string
+---@field bg_dark string
+---@field bg_highlight string
+---@field bg_popup string
+---@field bg_statusline string
+---@field bg_sidebar string
+---@field bg_float string
+---@field bg_visual string
+---@field bg_search string
+---@field fg_dark string
+---@field fg_gutter string
+---@field fg_sidebar string
+---@field fg_float string
+---@field black string
+---@field border string
+---@field border_highlight string
+---@field comment string
+---@field line_number string
+---@field cursor_dark_dark string
+---@field cursor_dark string
+---@field cursor_light string
+---@field selection string
+---@field context string
+---@field context_current string
+---@field fold_bg string
+---@field suggestion string
+---@field dim_highlight string
+---@field gray string
+---@field medium_blue string
+---@field dark_blue string
+---@field disabled_blue string
+---@field medium_cyan string
+---@field blue_green string
+---@field light_green string
+---@field light_red string
+---@field dark_yellow string
+---@field ui_orange string
+---@field error string
+---@field todo string
+---@field warning string
+---@field info string
+---@field hint string
+---@field diff table
+---@field git table
+---@field rainbow table
+---@field terminal table
+
+---@class Highlight: vim.api.keyset.highlight
+---@field style? vim.api.keyset.highlight
+
+---@alias Highlights table<string,Highlight|string>
+
+---@alias HighlightsFn fun(colors: ColorScheme, opts: Config):Highlights
+
+---@class Config
+---@field style? string
+---@field transparent? boolean
+---@field terminal_colors? boolean
+---@field underline_links? boolean
+---@field color_overrides? table
+---@field group_overrides? table
+---@field styles? {comments?:table, keywords?:table, functions?:table, variables?:table, inlayhints?:table, sidebars?:string, floats?:string}
+---@field day_brightness? number
+---@field dim_inactive? boolean
+---@field lualine_bold? boolean
+---@field on_colors? fun(colors: ColorScheme)
+---@field on_highlights? fun(highlights: Highlights, colors: ColorScheme)
+---@field cache? boolean
+---@field plugins? table
+
+---@class Cache
+---@field groups Highlights
+---@field inputs table

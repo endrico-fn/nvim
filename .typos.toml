@@ -1,0 +1,23 @@
+[default.extend-words]
+Noice = "Noice"
+noice = "noice"
+Parm = "Parm"
+ot = "ot"
+
+# Indonesian / EN-ID false positives
+Analisis = "Analisis"
+Argumen = "Argumen"
+Hipotesis = "Hipotesis"
+Profesional = "Profesional"
+Respons = "Respons"
+Skeptis = "Skeptis"
+Standar = "Standar"
+analisis = "analisis"
+argumen = "argumen"
+blok = "blok"
+hipotesis = "hipotesis"
+operasional = "operasional"
+paket = "paket"
+performa = "performa"
+resisten = "resisten"
+respons = "respons"
