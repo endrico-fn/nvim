@@ -27,8 +27,8 @@ echo "┃                                                                  ┃"
 echo "┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛"
 
 step "Installing system packages via pacman: ${PKGS[*]}"
-if ! sudo pacman -S --needed "${PKGS[@]}"; then
-    echo "pacman failed. If you encounter 404 or stale database errors, run 'sudo pacman -Syu' and retry." >&2
+if ! sudo pacman -Syu --needed "${PKGS[@]}"; then
+    echo "pacman failed. Check network or lockfile (/var/lib/pacman/db.lck) and retry." >&2
     exit 1
 fi
 
