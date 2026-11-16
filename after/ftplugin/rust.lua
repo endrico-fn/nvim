@@ -1,0 +1,20 @@
+local buf = vim.api.nvim_get_current_buf()
+
+local function rmap(lhs, args, desc, mode)
+    vim.keymap.set(mode or "n", lhs, function()
+        vim.cmd.RustLsp(args)
+    end, { buf = buf, silent = true, noremap = true, desc = desc })
+end
+
+rmap("<leader>ca", "codeAction", "Rust: Code Action", { "n", "v" })
+rmap("<leader>dD", "debuggables", "Rust: Debuggables")
+rmap("<leader>ke", "explainError", "Rust: Explain Error")
+rmap("<leader>kd", "renderDiagnostic", "Rust: Render Diagnostic (Full ANSI)")
+rmap("<leader>kp", "parentModule", "Rust: Parent Module")
+rmap("<leader>kC", "openCargo", "Rust: Open Cargo.toml")
+rmap("<leader>kr", "runnables", "Rust: Runnables (Run)")
+rmap("<leader>kt", "testables", "Rust: Testables (Test)")
+rmap("<leader>km", "expandMacro", "Rust: Expand Macro")
+rmap("<leader>ko", "openDocs", "Rust: Open Docs.rs")
+rmap("<leader>kF", { "flyCheck", "run" }, "Rust: Trigger FlyCheck")
+rmap("<leader>kP", "rebuildProcMacros", "Rust: Rebuild Proc Macros")

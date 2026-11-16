@@ -498,7 +498,7 @@ return {
                     if not client or client.name ~= "rust-analyzer" then
                         return
                     end
-                    vim.keymap.set("n", "<leader>ca", function()
+                    vim.keymap.set({ "n", "v" }, "<leader>ca", function()
                         vim.cmd.RustLsp("codeAction")
                     end, { buf = args.buf, desc = "Rust: Code Action" })
                 end,

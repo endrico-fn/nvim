@@ -1,0 +1,12 @@
+---@type vim.lsp.Config
+return {
+    root_markers = {
+        ".taplo.toml",
+        "taplo.toml",
+        "Cargo.toml",
+        "pyproject.toml",
+        "deno.json",
+        "wrangler.toml",
+        ".git",
+    },
+}

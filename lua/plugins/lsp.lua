@@ -2,6 +2,9 @@ return {
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile", "CmdlineEnter", "VeryLazy" },
+        dependencies = {
+            "b0o/SchemaStore.nvim",
+        },
         config = function()
             require("config.lsp").enable()
         end,

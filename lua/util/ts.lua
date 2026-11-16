@@ -210,4 +210,61 @@ function M.sort_tailwind_classes()
     end, buf)
 end
 
+--- Registers buffer-local TypeScript / vtsls keymaps cleanly without leaking across filetypes.
+---@param buf? number
+function M.setup_ts_ftplugin(buf)
+    buf = (buf and buf ~= 0) and buf or vim.api.nvim_get_current_buf()
+    local lsp = require("config.lsp")
+    local opts = { buf = buf, silent = true, noremap = true }
+
+    vim.keymap.set("n", "gR", function()
+        lsp.execute({
+            command = "typescript.findAllFileReferences",
+            arguments = { vim.uri_from_bufnr(buf) },
+            open = true,
+        })
+    end, vim.tbl_extend("force", opts, { desc = "TS: File References" }))
+
+    vim.keymap.set("n", "<leader>cD", function()
+        local win = vim.api.nvim_get_current_win()
+        local params = vim.lsp.util.make_position_params(win, "utf-16")
+        lsp.execute({
+            command = "typescript.goToSourceDefinition",
+            arguments = { params.textDocument.uri, params.position },
+            open = true,
+        })
+    end, vim.tbl_extend("force", opts, { desc = "TS: Goto Source Definition" }))
+
+    vim.keymap.set(
+        "n",
+        "<leader>cO",
+        lsp["source.organizeImports"],
+        vim.tbl_extend("force", opts, { desc = "TS: Organize Imports" })
+    )
+    vim.keymap.set(
+        "n",
+        "<leader>cM",
+        lsp["source.addMissingImports.ts"],
+        vim.tbl_extend("force", opts, { desc = "TS: Add Missing Imports" })
+    )
+    vim.keymap.set(
+        "n",
+        "<leader>cF",
+        lsp["source.fixAll.ts"],
+        vim.tbl_extend("force", opts, { desc = "TS: Fix All" })
+    )
+    vim.keymap.set("n", "<leader>cV", function()
+        lsp.execute({ command = "typescript.selectTypeScriptVersion" })
+    end, vim.tbl_extend("force", opts, { desc = "TS: Select Workspace Version" }))
+end
+
+--- Registers buffer-local Tailwind class sorting keymap cleanly.
+---@param buf? number
+function M.setup_tailwind_ftplugin(buf)
+    buf = (buf and buf ~= 0) and buf or vim.api.nvim_get_current_buf()
+    vim.keymap.set({ "n", "v" }, "<leader>cs", function()
+        M.sort_tailwind_classes()
+    end, { buf = buf, silent = true, noremap = true, desc = "Tailwind: Sort Classes" })
+end
+
 return M
