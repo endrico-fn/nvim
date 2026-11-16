@@ -21,7 +21,7 @@ vim.treesitter.language.register("markdown", "markdown.mdx")
 vim.treesitter.language.register("yaml", "yaml.docker-compose")
 
 -- Per-buffer Treesitter highlight, foldexpr, and indentexpr (Neovim 0.12 native API)
-local MAX_TS_FILESIZE = 512 * 1024
+local MAX_TS_FILESIZE = 1.5 * 1024 * 1024
 vim.api.nvim_create_autocmd("FileType", {
     group = augroup("treesitter_start"),
     callback = function(ev)
@@ -176,19 +176,4 @@ vim.api.nvim_create_autocmd("FileType", {
             desc = "Close buffer",
         })
     end,
-})
-
--- Lazy on-demand wrappers for util.sysdeps (keeps startup fast & non-intrusive)
-vim.api.nvim_create_user_command("SysDepsCheck", function()
-    require("util.sysdeps").check()
-end, { desc = "Show system development dependencies status" })
-
-vim.api.nvim_create_user_command("SysDepsInstall", function(args)
-    require("util.sysdeps").install(args.args == "all")
-end, {
-    nargs = "?",
-    complete = function()
-        return { "all" }
-    end,
-    desc = "Install missing system dependencies via pacman and rustup",
 })

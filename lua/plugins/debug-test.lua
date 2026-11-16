@@ -294,7 +294,7 @@ return {
                 "jay-babu/mason-nvim-dap.nvim",
                 dependencies = "mason.nvim",
                 opts = {
-                    automatic_installation = false,
+                    automatic_installation = true,
                     handlers = {
                         function(config)
                             require("mason-nvim-dap").default_setup(config)

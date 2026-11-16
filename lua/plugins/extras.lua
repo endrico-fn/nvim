@@ -1,7 +1,3 @@
-local system_cores = #(vim.uv.cpu_info() or {})
-local optimal_threads = math.max(1, system_cores > 2 and (system_cores - 1) or 1)
-local cargo_jobs = tostring(math.max(1, math.min(2, system_cores - 1)))
-
 local function is_sqlite_file(path)
     local ok, handle = pcall(vim.uv.fs_open, path, "r", 438)
     if not ok or not handle then
@@ -354,7 +350,6 @@ return {
             code = { sign = false, width = "block", right_pad = 1 },
             heading = { sign = false, icons = {} },
             checkbox = { enabled = true },
-            latex = { enabled = false },
         },
     },
 
@@ -444,7 +439,7 @@ return {
                             ["rust-analyzer"] = {
                                 cargo = {
                                     buildScripts = { enable = true },
-                                    allFeatures = false,
+                                    allFeatures = true,
                                     loadOutDirsFromCheck = true,
                                     targetDir = vim.fn.stdpath("cache") .. "/rust-analyzer-target/",
                                 },
@@ -454,13 +449,12 @@ return {
                                 },
                                 server = { extraEnv = { RA_LOG = "error" } },
                                 workspace = {
-                                    symbol = { search = { scope = "workspace", limit = 128 } },
+                                    symbol = { search = { scope = "workspace" } },
                                 },
-                                numThreads = optimal_threads,
                                 check = {
                                     command = "clippy",
                                     allTargets = true,
-                                    extraArgs = { "--no-deps", "-j", cargo_jobs },
+                                    extraArgs = { "--no-deps" },
                                 },
                                 diagnostics = {
                                     enable = true,
@@ -490,13 +484,12 @@ return {
                                     typeHints = { enable = true },
                                     maxLength = 25,
                                 },
-                                lru = { capacity = 128 },
-                                cachePriming = { enable = false },
+                                cachePriming = { enable = true },
                                 completion = {
                                     callable = { snippets = "fill_arguments" },
                                     postfix = { enable = true },
                                 },
-                                hover = { actions = { enable = true, references = false } },
+                                hover = { actions = { enable = true, references = true } },
                                 lens = { enable = true },
                             },
                         },

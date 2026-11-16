@@ -20,9 +20,7 @@ return {
     },
     cmd = {
         "clangd",
-        "-j=2",
         "--background-index",
-        "--background-index-priority=low",
         "--clang-tidy",
         "--header-insertion=iwyu",
         "--completion-style=detailed",

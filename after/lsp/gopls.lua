@@ -1,9 +1,5 @@
 ---@type vim.lsp.Config
 return {
-    cmd_env = {
-        GOGC = "50",
-        GOMEMLIMIT = "400MiB",
-    },
     settings = {
         gopls = {
             gofumpt = vim.fn.executable("gofumpt") == 1,
@@ -19,7 +15,7 @@ return {
                 generate = true,
                 regenerate_cgo = true,
                 run_govulncheck = true,
-                test = false,
+                test = true,
                 tidy = true,
                 upgrade_dependency = true,
                 vendor = true,

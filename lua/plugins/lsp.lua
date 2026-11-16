@@ -12,13 +12,25 @@ return {
 
     {
         "mason-org/mason.nvim",
-        cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonLog" },
+        event = { "VeryLazy", "BufReadPre", "BufNewFile" },
+        cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonLog", "MasonUpdate" },
         opts_extend = { "ensure_installed" },
         init = function()
             local mason_bin = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin")
             if not (vim.env.PATH or ""):find(mason_bin, 1, true) then
                 vim.env.PATH = mason_bin .. ":" .. (vim.env.PATH or "")
             end
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "LazyInstall",
+                once = true,
+                callback = function()
+                    vim.schedule(function()
+                        require("lazy").load({
+                            plugins = { "mason.nvim", "mason-lspconfig.nvim", "nvim-lspconfig" },
+                        })
+                    end)
+                end,
+            })
         end,
         opts = {
             ui = {
@@ -30,19 +42,70 @@ return {
                 },
             },
             log_level = vim.log.levels.INFO,
-            max_concurrent_installers = 2,
-            -- Core essentials only (additional formatters/linters/DAPs installed on-demand via :Mason)
+            max_concurrent_installers = 4,
             ensure_installed = {
-                "stylua",
-                "shfmt",
+                -- DAP adapters
+                "codelldb",
+                "dart-debug-adapter",
+                "debugpy",
+                "delve",
+                "js-debug-adapter",
+                -- Formatters & codegen
+                "buf",
+                "gofumpt",
+                "goimports",
+                "gotests",
+                "gomodifytags",
+                "impl",
+                "markdown-toc",
+                "prettier",
                 "prettierd",
+                "shfmt",
+                "sql-formatter",
+                "sqlfluff",
+                "stylua",
+                "yamlfmt",
+                -- Linters & CLI tools
+                "actionlint",
+                "golangci-lint",
+                "gotestsum",
+                "hadolint",
+                "htmlhint",
+                "markdownlint-cli2",
+                "selene",
+                "shellcheck",
+                "stylelint",
+                "systemdlint",
+                "tree-sitter-cli",
+                "yamllint",
+                -- Language plugins
+                "vue-language-server",
             },
         },
         config = function(_, opts)
             require("mason").setup(opts)
             local mr = require("mason-registry")
-            mr:on("package:install:success", function()
+            mr:on("package:install:success", function(pkg)
                 vim.defer_fn(function()
+                    if pkg and pkg.name == "vue-language-server" then
+                        local ok_ts, ts_mod = pcall(require, "util.ts")
+                        for _, client in ipairs(vim.lsp.get_clients({ name = "vtsls" })) do
+                            if
+                                ok_ts
+                                and ts_mod.inject_vue_plugin
+                                and client.config
+                                and client.config.settings
+                            then
+                                local updated =
+                                    ts_mod.inject_vue_plugin(vim.deepcopy(client.config.settings))
+                                client.config.settings = updated
+                                client:notify(
+                                    "workspace/didChangeConfiguration",
+                                    { settings = updated }
+                                )
+                            end
+                        end
+                    end
                     require("lazy.core.handler.event").trigger({
                         event = "FileType",
                         buf = vim.api.nvim_get_current_buf(),
@@ -50,31 +113,58 @@ return {
                 end, 100)
             end)
 
-            vim.defer_fn(function()
+            local function install_missing()
                 for _, tool in ipairs(opts.ensure_installed or {}) do
                     pcall(function()
                         local p = mr.get_package(tool)
-                        if not p:is_installed() then
+                        if not p:is_installed() and not p:is_installing() then
                             p:install()
                         end
                     end)
                 end
-            end, 2000)
+            end
+            mr.refresh(vim.schedule_wrap(install_missing))
         end,
     },
 
     {
         "mason-org/mason-lspconfig.nvim",
-        event = { "BufReadPre", "BufNewFile" },
+        event = { "VeryLazy", "BufReadPre", "BufNewFile" },
         dependencies = {
             "mason-org/mason.nvim",
             "neovim/nvim-lspconfig",
         },
         opts = {
-            -- Core LSP servers only; install extra language servers via :MasonInstall
+            -- rust_analyzer excluded: managed by rustaceanvim + rustup toolchain
             ensure_installed = {
-                "lua_ls",
+                "astro",
                 "basedpyright",
+                "bashls",
+                "biome",
+                "buf_ls",
+                "clangd",
+                "cssls",
+                "dockerls",
+                "emmet_language_server",
+                "eslint",
+                "gopls",
+                "html",
+                "jsonls",
+                "lua_ls",
+                "marksman",
+                "ruff",
+                "sqls",
+                "svelte",
+                "systemd_lsp",
+                "tailwindcss",
+                "taplo",
+                "tsc",
+                "ty",
+                "typos_lsp",
+                "vtsls",
+                "vue_ls",
+                "yamlls",
+                "zls",
             },
             -- Server activation handled natively via vim.lsp.enable() in config.lsp
             automatic_enable = false,
@@ -201,7 +291,7 @@ return {
                     return
                 end
                 local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(bufnr))
-                if ok and stats and stats.size > 100 * 1024 then
+                if ok and stats and stats.size > 1024 * 1024 then
                     return
                 end
                 if vim.bo[bufnr].buftype ~= "" then
@@ -343,7 +433,7 @@ return {
                 local linters = lint.linters_by_ft[ft] or {}
                 local available = {}
                 for _, name in ipairs(linters) do
-                    -- Heavy Go linter runs only on BufWritePost (avoids CPU spikes on InsertLeave)
+                    -- Package-level Go linter analyzes saved files on disk, so run on BufWritePost
                     if name == "golangcilint" and event_name ~= "BufWritePost" then
                         goto continue
                     end

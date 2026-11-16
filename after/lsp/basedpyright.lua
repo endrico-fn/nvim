@@ -37,8 +37,8 @@ return {
                 typeCheckingMode = "standard",
                 autoImportCompletions = true,
                 autoSearchPaths = true,
-                diagnosticMode = "openFilesOnly",
-                indexing = false,
+                diagnosticMode = "workspace",
+                indexing = true,
                 inlayHints = {
                     variableTypes = true,
                     functionReturnTypes = true,

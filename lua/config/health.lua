@@ -1,8 +1,24 @@
 return {
     check = function()
-        require("util.sysdeps").check_health()
-
         local health = vim.health
+        health.start("config: Core Tools & Mason PATH")
+
+        local core_bins = { "git", "rg", "fd", "tree-sitter", "curl", "unzip", "node" }
+        for _, bin in ipairs(core_bins) do
+            if vim.fn.executable(bin) == 1 then
+                health.ok(bin .. " (" .. vim.fn.exepath(bin) .. ")")
+            else
+                health.warn(bin .. " tidak ditemukan di PATH")
+            end
+        end
+
+        local mason_bin = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin")
+        if vim.fn.isdirectory(mason_bin) == 1 and (vim.env.PATH or ""):find(mason_bin, 1, true) then
+            health.ok("Mason bin aktif di PATH: " .. mason_bin)
+        else
+            health.info("Mason bin akan otomatis disiapkan setelah plugin Mason termuat")
+        end
+
         health.start("python: Environment & Tooling")
         local ok_py, py_mod = pcall(require, "util.python")
         if ok_py then
@@ -16,23 +32,14 @@ return {
             local uv_ver = vim.fn.system({ "uv", "--version" }):gsub("%s+$", "")
             health.ok("uv: " .. uv_ver)
         else
-            health.warn("uv tidak ditemukan di PATH (disarankan pasang via pacman -Syu uv)")
+            health.info("uv tidak ditemukan di PATH (opsional untuk manajemen venv)")
         end
 
-        local ruff_path = vim.fn.exepath("ruff")
-        local mason_bin = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin")
-        local is_mason_ruff = ruff_path ~= "" and ruff_path:sub(1, #mason_bin) == mason_bin
-        if ruff_path ~= "" and not is_mason_ruff then
-            local ruff_ver = vim.fn.system({ ruff_path, "--version" }):gsub("%s+$", "")
-            health.ok("ruff (native): " .. ruff_ver)
-        elseif is_mason_ruff then
-            health.info(
-                "ruff memakai fallback Mason ("
-                    .. ruff_path
-                    .. "); disarankan pasang via pacman -Syu ruff"
-            )
+        if vim.fn.executable("ruff") == 1 then
+            local ruff_ver = vim.fn.system({ "ruff", "--version" }):gsub("%s+$", "")
+            health.ok("ruff: " .. ruff_ver .. " (" .. vim.fn.exepath("ruff") .. ")")
         else
-            health.warn("ruff tidak ditemukan (pasang via pacman -Syu ruff atau Mason)")
+            health.warn("ruff belum ditemukan (otomatis dipasang lewat Mason saat sesi aktif)")
         end
     end,
 }

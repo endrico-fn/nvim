@@ -2,16 +2,11 @@ local root_mod = require("util.root")
 local ts_mod = require("util.ts")
 
 local global_plugins = {}
-local vue_plugin_path =
-    root_mod.mason_pkg_path("vue-language-server", "node_modules", "@vue", "typescript-plugin")
-if vue_plugin_path then
-    table.insert(global_plugins, {
-        name = "@vue/typescript-plugin",
-        location = vue_plugin_path,
-        languages = { "vue" },
-        configNamespace = "typescript",
-        enableForWorkspaceTypeScriptVersions = true,
-    })
+do
+    local initial = ts_mod.inject_vue_plugin({})
+    if initial.vtsls and initial.vtsls.tsserver and initial.vtsls.tsserver.globalPlugins then
+        global_plugins = initial.vtsls.tsserver.globalPlugins
+    end
 end
 
 ---@type vim.lsp.Config
@@ -43,6 +38,7 @@ return {
         on_dir(r or vim.fn.fnamemodify(fname, ":h"))
     end,
     before_init = function(params, config)
+        config.settings = ts_mod.inject_vue_plugin(config.settings)
         local target = config.root_dir or vim.api.nvim_buf_get_name(0)
         if not target or target == "" then
             return
@@ -67,7 +63,6 @@ return {
             diagnostics = { globallyEnabled = true },
             tsserver = {
                 globalPlugins = global_plugins,
-                maxTsServerMemory = 768,
             },
         },
         typescript = {

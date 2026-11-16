@@ -91,29 +91,39 @@ function M.is_ts7_workspace(bufnr)
         return _ts7_cache[root]
     end
 
-    local candidates = {}
     local local_tsgo = root .. "/node_modules/.bin/tsgo"
     local local_tsc = root .. "/node_modules/.bin/tsc"
     if vim.uv.fs_stat(local_tsgo) then
-        table.insert(candidates, local_tsgo)
+        local major = detect_ts7_major(local_tsgo)
+        _ts7_cache[root] = (major and major >= 7) and { ok = true, root = root, bin = local_tsgo }
+            or { ok = false }
+        return _ts7_cache[root]
     end
     if vim.uv.fs_stat(local_tsc) then
-        table.insert(candidates, local_tsc)
-    end
-    local global_tsgo = exepath_nonempty("tsgo")
-    if global_tsgo then
-        table.insert(candidates, global_tsgo)
-    end
-    local global_tsc = exepath_nonempty("tsc")
-    if global_tsc then
-        table.insert(candidates, global_tsc)
+        local major = detect_ts7_major(local_tsc)
+        _ts7_cache[root] = (major and major >= 7) and { ok = true, root = root, bin = local_tsc }
+            or { ok = false }
+        return _ts7_cache[root]
     end
 
-    for _, bin in ipairs(candidates) do
-        local major = detect_ts7_major(bin)
-        if major and major >= 7 then
-            _ts7_cache[root] = { ok = true, root = root, bin = bin }
-            return _ts7_cache[root]
+    -- Without local node_modules TS binary, only engage global tsgo/tsc >= 7 if workspace opts in
+    local ts_spec = pkg
+            and ((type(pkg.devDependencies) == "table" and pkg.devDependencies.typescript) or (type(
+                pkg.dependencies
+            ) == "table" and pkg.dependencies.typescript))
+        or nil
+    local opts_into_ts7 = has_pkg_dep(pkg, "@typescript/native-preview")
+        or (type(ts_spec) == "string" and (ts_spec:match("^%D*7%.") or ts_spec == "next"))
+    if opts_into_ts7 then
+        for _, cmd in ipairs({ "tsgo", "tsc" }) do
+            local bin = exepath_nonempty(cmd)
+            if bin then
+                local major = detect_ts7_major(bin)
+                if major and major >= 7 then
+                    _ts7_cache[root] = { ok = true, root = root, bin = bin }
+                    return _ts7_cache[root]
+                end
+            end
         end
     end
 
@@ -287,6 +297,42 @@ function M.setup_tailwind_ftplugin(buf)
     vim.keymap.set({ "n", "v" }, "<leader>cs", function()
         M.sort_tailwind_classes()
     end, { buf = buf, silent = true, noremap = true, desc = "Tailwind: Sort Classes" })
+end
+
+--- Injects Mason's `@vue/typescript-plugin` into a `vtsls` settings table when installed.
+---@param settings? table
+---@return table
+function M.inject_vue_plugin(settings)
+    settings = settings or {}
+    local vue_plugin_path = require("util.root").mason_pkg_path(
+        "vue-language-server",
+        "node_modules",
+        "@vue",
+        "typescript-plugin"
+    )
+    if not vue_plugin_path then
+        return settings
+    end
+    settings.vtsls = settings.vtsls or {}
+    settings.vtsls.tsserver = settings.vtsls.tsserver or {}
+    settings.vtsls.tsserver.globalPlugins = settings.vtsls.tsserver.globalPlugins or {}
+    local exists = false
+    for _, plugin in ipairs(settings.vtsls.tsserver.globalPlugins) do
+        if plugin.name == "@vue/typescript-plugin" then
+            exists = true
+            break
+        end
+    end
+    if not exists then
+        table.insert(settings.vtsls.tsserver.globalPlugins, {
+            name = "@vue/typescript-plugin",
+            location = vue_plugin_path,
+            languages = { "vue" },
+            configNamespace = "typescript",
+            enableForWorkspaceTypeScriptVersions = true,
+        })
+    end
+    return settings
 end
 
 return M
